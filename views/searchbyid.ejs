@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Hello, world!</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="" />
+  <link rel="stylesheet" href="../assets/css/search.css">
+  <link rel="stylesheet" href="/css/search.css">
+  <style>
+    body{
+    margin: 0%;
+}
+#formdiv{
+    border: 4px solid black;
+    height: fit-content;
+    width: 60%;
+    margin: auto;
+    margin-top: 20%;
+    margin-top: auto; 
+}
+
+.inputfields{
+    width: 70%;
+    height: 4vh;
+    display: inline-block;
+    margin: 5px;
+    margin-left: 14%;
+}
+
+#submitbtn{
+    width: 30%;
+    height: 4vh;
+    margin-left: 36%;
+}
+.colfields{
+    width: 30%;
+    height: 4vh;
+    display: inline-block;
+    margin:3%;
+    margin-left: 7%;
+    margin-top: auto;
+}
+
+
+  </style>
+  
+</head>
+
+<body>
+  <div id="formdiv" style="height:54vh ;">
+    <form action="/database/searchbyid" method="post">
+        <select class="inputfields" id="select_database" name="database" onchange="request(this.value)">
+          <option value="" style="height: 5vh;">Select Database</option>
+
+          <% for (let i of databases){ %>
+      <option value="<%= i.Database %>" class="databasename"  style="height: 10vh;  "> <%= i.Database %>  </option>
+              <% } %>
+
+      </select>
+      <select class="inputfields" id="selecttable" name="table">
+        <option >Select Table</option>
+    </select>
+        <!-- <input type="number" name="id" id="" class="inputfields" placeholder="Enter the id you want to search for"> -->
+        <select class="inputfields" id="selectcol1" name="col1">
+          <option >Select Column</option>
+      </select>
+      <select class="inputfields" id="selectcol2" name="col2">
+        <option >Select Column</option>
+    </select>
+    <select class="inputfields" id="selectcol3" name="col3">
+      <option >Select Column</option>
+  </select>
+
+        <button type="submit" id="submitbtn">Submit</button>
+    </form>
+  </div>
+  <script src="/javascript/jquery-3.6.0.js"></script>
+<script type="module" src="/javascript/search.ajax" ></script>
+<script>
+    const table = '<%- JSON.stringify(tables) %>'
+    function request(dbname){
+        var ctable = Object.values(JSON.parse(table));
+        var availableTables = ctable.filter(e => e.database_name === dbname)
+        console.log(availableTables)
+        $("option[class='doptions']").remove();
+        for(var i=0;i<availableTables.length;i++)
+        {
+                $('#selecttable').append($('<option>', {
+                    value: availableTables[i].table_name,
+                    text: availableTables[i].table_name,
+                    class:'doptions'
+                    
+                }));
+        }
+    }
+</script>
+</body>
+</html>
